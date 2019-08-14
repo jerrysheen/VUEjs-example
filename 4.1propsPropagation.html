@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+</head>
+
+<body>
+    <div id="father-to-child-props">
+        <div v-bind:style="{fontSize:fontSize+'em'}">
+        <blog 
+            v-on:enlarge-font="fontSize += 1"
+            v-for="post in posts"
+            v-bind:key="post.title"
+            v-bind:post="post"
+        ></blog>
+        </div>
+    </div>
+
+</body>
+<script>
+    Vue.component('blog', {
+        props:['post'],
+        template: `<div>\
+        <h1>{{post.title}}</h1>\
+        <div>{{post.content}}</div>\
+        <button v-on:click="$emit('enlarge-font')">enlarge</button>\
+        </div>\
+        `
+    })
+
+    Vue.componet('input-model',{
+        props:['value']
+    })
+
+
+
+    new Vue({
+        el: '#father-to-child-props',
+        data: {
+            fontSize:1,
+            posts: [
+                {
+                    title: '111',
+                    content: '23809183902189328109380921'
+                },
+                {
+                    title: '222',
+                    content: 'djadkjakdjlkasjdljsal'
+                }
+            ]
+        }
+    })
+</script>
+
+</html>

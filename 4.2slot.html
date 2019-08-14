@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+</head>
+<!-- 用来测试slot属性的html -->
+<body>
+    <div id="slot-component">
+        <componet-with-slot>"this is slot,you can type whatever you want"</componet-with-slot>
+    </div>
+
+</body>
+<script>
+    Vue.component('componet-with-slot', {
+        props:[],
+        template: `<div>\
+        <h1>Downside is the slot</h1>\
+        <slot></slot>\
+        \
+        </div>\
+        `
+    })
+
+    new Vue({
+        el: '#slot-component',
+        data: {
+            fontSize:1
+        }
+    })
+</script>
+
+</html>
