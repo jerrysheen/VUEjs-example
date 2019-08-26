@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <title>Custom Cmd</title>
+</head>
+<body>
+    <div id="custom-cmd">
+        <h1 v-style>{{test}}</h1>
+        <label>self focus</label>
+        <input type="text" v-focus="test" v-model="test"/>
+    </div>
+
+    
+    <script>
+        vm = new Vue({
+            el:"#custom-cmd",
+            data:{
+                test:"123"
+            },
+            directives:{
+                style:{
+                    bind(el,binding){
+                        el.style.color="red"
+                    }
+                },
+                focus:{
+                    inserted(el,binding){
+                        console.log(binding)
+                        el.focus()
+                        console.log(binding.value)
+                        binding.value = el.value
+                    }
+                    
+                }
+            },
+            
+        })
+    </script>
+</body>
+</html>
