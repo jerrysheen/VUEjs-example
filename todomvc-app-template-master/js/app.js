@@ -16,13 +16,23 @@
 		el:"#todoapp",
 		data:{
 			title:"todos",
-			items:[...localData]
+			items:[...localData],
+			
 		},
+
+		//computed property
 		computed:{
 			needToDo:function(){
 				return this.items.filter(item =>{return item.completed === false}).length
-			}
+			},
+			checkStatus:function(){ //false means not all done
+				const completed = this.items.filter(item=>{return item.completed===true})
+				const totalNumber = this.items.length
+				return  completed.length === totalNumber ? true:false
+			},
 		},
+
+		//method 
 		methods: {
 			deleteItem:function(id,event){
 				console.log("item id",typeof(id))
@@ -30,6 +40,7 @@
 				console.log(this.items)
 			},
 			addTodo:function(event){
+				// add new todo to the list
 				console.log(event.target.value)
 				const newTodo = event.target.value.trim()
 				const isSame = this.items.filter(item =>{return item.content === newTodo}).length
@@ -50,6 +61,29 @@
 					alert("you already have this todo item or your enter is empty")
 				}
 				
+			},
+			toggleClick:function(event){
+				// true-> black(all done)  false-> gray
+				const checked = event.target.checked
+				if(checked === true){
+					this.items = this.items.map(item=>{
+						return {
+							id:item.id,
+							content:item.content,
+							completed : true
+						}
+					})
+				}
+				else{
+					this.items = this.items.map(item=>{
+						return {
+							...item,
+							completed : false
+						}
+					})
+
+				}
+				console.log(event.target.checked)
 			}	
 		},
 	})

@@ -17,7 +17,8 @@
 			</header>
 			<!-- This section should be hidden by default and shown when there are todos -->
 			<section class="main">
-				<input id="toggle-all" class="toggle-all" type="checkbox">
+					<!-- v-on:click="toggleClick()" -->
+				<input  v-bind:checked="checkStatus" v-on:click="toggleClick($event)" id="toggle-all" class="toggle-all" type="checkbox" >
 				<label for="toggle-all">Mark all as complete</label>
 				<ul class="todo-list" v-for="item in items">
 					<!-- These are here just to show the structure of the list items -->
