@@ -17,11 +17,27 @@
 		data:{
 			title:"todos",
 			items:[...localData],
+			currentID:-1,
 			
 		},
-
+		//custom instruction
+		directives:{
+			focus :{
+				inserted(el){
+					el.focus()
+				},
+				update(el){
+					el.focus()
+				}
+			}
+		},
 		//computed property
 		computed:{
+			hasCompletedItem:function(){
+				// to computed weather there has complted todos in the items,
+				const completed = this.items.filter(item =>{return item.completed === true}).length
+				return 0===completed? false:true
+			},
 			needToDo:function(){
 				return this.items.filter(item =>{return item.completed === false}).length
 			},
@@ -29,14 +45,14 @@
 				const completed = this.items.filter(item=>{return item.completed===true})
 				const totalNumber = this.items.length
 				return  completed.length === totalNumber ? true:false
-			},
+			}
 		},
 
 		//method 
 		methods: {
-			deleteItem:function(id,event){
-				console.log("item id",typeof(id))
-				this.items = this.items.filter(item=>{return item.id!=id})
+			deleteItem:function(index){
+				console.log("item id",index)
+				this.items.splice(index,1) 
 				console.log(this.items)
 			},
 			addTodo:function(event){
@@ -49,7 +65,7 @@
 				if(isSame === 0 && newTodo!=""){
 					// not same
 					this.items = [...this.items,{
-						id:this.items[length-1].id+1,
+						id:length=== 0 ? 1:String(Number(this.items[length-1].id)+1),
 						content:newTodo,
 						completed:false
 					}]
@@ -84,7 +100,37 @@
 
 				}
 				console.log(event.target.checked)
-			}	
+			},
+			deleteFinished:function(){
+				this.items = this.items.filter(
+					item=>{
+						return item.completed===false
+					}
+				)
+			},
+			editItem:function(id){
+				//console.log("id",id)
+				this.currentID = id
+				//console.log(this.currentID===id)
+			},
+			// edit , leave and save function
+			leaveEdit:function(){
+				this.currentID = "-1"
+			},	
+			saveEdit(index,event){
+				console.log(event.target.value)
+				const newValue = event.target.value
+				if(newValue === ""){
+					this.leaveEdit()
+				}
+				else{
+					this.items[index] = {
+						...this.items[index],
+						content:newValue
+					}
+					this.leaveEdit()
+				}
+			}
 		},
 	})
 })(Vue);
