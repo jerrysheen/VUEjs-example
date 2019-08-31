@@ -1,4 +1,15 @@
 (function (Vue) {
+	// save or get data from localStorage
+	const KEY_STORAGE = 'vue_js'
+	const storeItems ={
+		fetch:function(){
+			// get json string then parse to object
+			return (JSON.parse(localStorage.getItem(KEY_STORAGE)) || [])
+		},
+		save:function(items){
+			localStorage.setItem(KEY_STORAGE, JSON.stringify(items))
+		}
+	}
 	let localData = [
 		{
 			id:"1",
@@ -12,13 +23,23 @@
 		},
 	]
 
-	new Vue({
+	var app = new Vue({
 		el:"#todoapp",
 		data:{
 			title:"todos",
-			items:[...localData],
+			items:storeItems.fetch(KEY_STORAGE),
 			currentID:-1,
+			filterStatus:'all', // decided which button
 			
+		},
+		// watch listener
+		watch: {
+			items:{
+				deep:true,
+				handler:function(newItems, oldItems){
+					storeItems.save(newItems)
+				}
+			}
 		},
 		//custom instruction
 		directives:{
@@ -33,6 +54,20 @@
 		},
 		//computed property
 		computed:{
+			filterStatusItems:function(){
+				// return a list depending on which router you choice
+				 switch(this.filterStatus){
+					case 'all':
+						console.log("all")
+						return this.items
+					case 'active':
+						console.log("active")
+						return this.items.filter(item=>{return item.completed===false})
+					default :
+						console.log("complted")
+						return this.items.filter(item=>{return item.completed===true})
+				 }
+			},
 			hasCompletedItem:function(){
 				// to computed weather there has complted todos in the items,
 				const completed = this.items.filter(item =>{return item.completed === true}).length
@@ -133,4 +168,12 @@
 			}
 		},
 	})
+
+	//路由hash值发生变化之后，会自动调用这个函数
+	window.onhashchange = function(){
+		console.log('hash', window.location.hash)
+		const hash = window.location.hash.substr(2) || 'all'
+		app.filterStatus = hash
+		console.log(app.filterStatus)
+	}
 })(Vue);
