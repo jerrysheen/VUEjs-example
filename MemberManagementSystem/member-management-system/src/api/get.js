@@ -1,12 +1,13 @@
 import instance from "@/utils/request"
 
+const BASE_URL = '/dev-api'
 // instance.get('/db.json').
 //     then(response=>{
 //         const data = response
 //         console.log(data)
 //     })
 const config = {
-    url:'/db.json',
+    url: BASE_URL + '/db.json',
     method:'get'
     
 }
