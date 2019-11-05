@@ -1,6 +1,8 @@
 <template>
   <div class="hello">
     <h1>{{ msg }}</h1>
+    <h2>the data you get:</h2>
+    <h3>{{ dbData }}</h3>
     <p>
       For a guide and recipes on how to configure / customize this project,<br />
       check out the
@@ -87,7 +89,25 @@
 </template>
 
 <script>
+import getListApi from '@/api/get'
 export default {
+  created() {
+    this.fetchData()
+  },
+  data(){
+    return {
+      dbData:[]
+    }
+  },
+  methods:{
+    fetchData(){
+      getListApi.getList()
+        .then(response=>{
+            console.log(response.data)
+            this.dbData = response.data
+        })
+    }
+  },
   name: "HelloWorld",
   props: {
     msg: String
