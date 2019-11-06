@@ -5,11 +5,11 @@ module.exports = {
         https: false,
         open: true,   // turn on broswer automaticly
         proxy:  {// dev-env configuration
-            '/dev-api':{
-                target: 'http://localhost:8001',
+            [process.env.VUE_APP_BASE_API] :{
+                target: process.env.VUE_APP_SERVER_URL,
                 changeOrigin: true,
                 pathRewrite: {
-                    '/dev-api': '',
+                    ['^'+process.env.VUE_APP_BASE_API]: '',
                 }
             }
         }
