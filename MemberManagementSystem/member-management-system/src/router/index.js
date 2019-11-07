@@ -6,10 +6,16 @@ Vue.use(VueRouter);
 
 const routes = [
   {
+    path: "",
+    name: "index",
+    component: Login
+  },
+  {
     path: "/login",
     name: "login",
     component: Login
   },
+  
 ];
 
 const router = new VueRouter({
