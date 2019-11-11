@@ -48,12 +48,12 @@ export default {
   },
   methods: {
     submitForm(formName) {
+        console.log(this.$refs[formName])
           this.$refs[formName].validate((valid) => {
             if (valid) {
-              alert('submit!');
+              // send http request to server
             } else {
               console.log('error submit!!');
-              return false;
             }
           });
         },
