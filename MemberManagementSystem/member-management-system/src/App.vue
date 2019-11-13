@@ -8,6 +8,7 @@
 body{
   font: "微软雅黑";
   margin: 0px;
+  
 }
 
 #app {

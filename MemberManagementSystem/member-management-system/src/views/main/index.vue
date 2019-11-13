@@ -1,20 +1,28 @@
 <template>
- <div>
-    <h1>mains</h1>
- </div>
+  <div>
+     <mainframe>
+        <h1>main content</h1>
+    </mainframe>
+  </div>
 </template>
 
 <script>
+import mainframe from '@/components/mainFrame' 
 export default {
- data () {
- return {
- }
- },
 
- components: {},
+   created() {
+      if(localStorage.getItem('msm-accountObj') == null){
+         this.$router.push('/login')
+      }
+   },
+   data() {
+    return {};
+   },
 
- methods: {},
-}
+   components: {mainframe},
+
+   methods: {}
+};
 </script>
 
 <style scoped>
