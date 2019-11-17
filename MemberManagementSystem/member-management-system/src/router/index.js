@@ -2,6 +2,11 @@ import Vue from "vue";
 import VueRouter from "vue-router";
 import Login from "../views/login";
 import Main from "@/views/main"
+import Member from "@/views/member"
+import Supply from "@/views/supply"
+import Goods from "@/views/goods"
+import Stuff from "@/views/stuff"
+
 Vue.use(VueRouter);
 
 const routes = [
@@ -14,6 +19,26 @@ const routes = [
     path: "/login",
     name: "login",
     component: Login
+  },
+  {
+    path: "/member",
+    name: "member",
+    component: Member
+  },
+  {
+    path: "/supply",
+    name: "supply",
+    component: Supply
+  },
+  {
+    path: "/goods",
+    name: "goods",
+    component: Goods
+  },
+  {
+    path: "/stuff",
+    name: "stuff",
+    component: Stuff
   },
   
 ];

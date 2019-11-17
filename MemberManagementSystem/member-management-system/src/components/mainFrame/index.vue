@@ -29,7 +29,7 @@ export default {
   margin-top: 50px;
   width: 15%;
   height: 100%;
-  background-color:darkgray;
+  background-color:white;
 }
 
 .main{
