@@ -7,6 +7,9 @@ import router from "./router";
 // use ElementUI
 Vue.use(ElementUI)
 
+// import login permission file
+import './permission'
+
 // if production mode then give  tips (pTip === true)
 Vue.config.productionTip = process.env.NODE_ENV === 'production';
 console.log(process.env.NODE_ENV)

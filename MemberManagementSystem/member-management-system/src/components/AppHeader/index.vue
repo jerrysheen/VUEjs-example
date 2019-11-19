@@ -12,18 +12,33 @@
           <el-dropdown-menu slot="dropdown">
             <el-dropdown-item icon="el-icon-edit" command="changepassword">修改密码</el-dropdown-item>
             <el-dropdown-item icon="el-icon-close" command="logout">退出登录</el-dropdown-item>
-            <el-dropdown-item>螺蛳粉</el-dropdown-item>
-            <el-dropdown-item disabled>双皮奶</el-dropdown-item>
-            <el-dropdown-item divided>蚵仔煎</el-dropdown-item>
           </el-dropdown-menu>
         </el-dropdown>
   </div>
 </template>
 <script>
+import {logout} from '@/api/login'
 export default {
   methods: {
     handleCommand(command) {
-        this.$message('click on item ' + command);
+        switch(command){
+          case 'logout':
+          //退出登陆
+              logout(localStorage.getItem('msm-token'))
+              .then(response=>{
+                  if(response.data.flag === true){
+                    localStorage.removeItem('msm-accountObj')
+                    this.$router.push('/login')
+                  }
+              })
+              break;
+          case 'changepassword':
+              this.$message(`clicked ${command}`)
+              break;
+          default:
+              break;
+        }
+
       }
     }
 }
@@ -47,4 +62,4 @@ export default {
   color:white;
 }
 
-</style>>
+</style>

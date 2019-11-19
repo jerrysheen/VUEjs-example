@@ -12,6 +12,11 @@ import AppNavbar from '@/components/AppNavbar'
 import AppMain from '@/components/AppMain'
 
 export default {
+  //    created() {
+  //     if(localStorage.getItem('msm-accountObj') == null){
+  //        this.$router.push('/login')
+  //     }
+  //  },
   components:{ AppHeader, AppNavbar, AppMain}
 };
 </script>
@@ -26,9 +31,9 @@ export default {
 
 .sidebar{
   position: absolute;
-  margin-top: 50px;
+  top: 50px;
   width: 15%;
-  height: 100%;
+  bottom: 0px;  
   background-color:white;
 }
 
@@ -36,9 +41,9 @@ export default {
   position: absolute;
   margin-top: 50px;
   margin-left: 15%;
-  width:100%;
+  width:85%;
   height: 100%;
-  background-color:dimgrey;
+  background-color:white;
 }
 
 
