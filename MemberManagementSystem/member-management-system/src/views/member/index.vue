@@ -5,7 +5,7 @@
       <el-table-column prop="name" label="姓名" width="180"> </el-table-column>
       <el-table-column label="支付类型" width="100">
         <template slot-scope="scope">
-          <span style="margin-left: 10px">{{payType|payTypeTrans}}</span>
+          <span style="margin-left: 10px">{{scope.row.payType|payTypeTrans}}</span>
         </template>
       </el-table-column>
       <el-table-column prop="address" label="地址"> </el-table-column>
@@ -28,6 +28,8 @@
 
 <script>
 import memberApi from "@/api/member.js";
+
+const typeList = ["现金", "微信", "支付宝", "银行卡"];
 
 export default {
   created() {
@@ -57,8 +59,7 @@ export default {
   },
   filters: {
     payTypeTrans: function(value) {
-      const typeList = ["现金", "微信", "支付宝", "银行卡"];
-      return typeList[parseInt(value)];
+      return typeList[parseInt(value)-1];
     }
   }
 };
