@@ -2,7 +2,8 @@
   <div>
       <!--  search bar-->
     <el-form :inline="true" :model="formInline" ref="formInline" class="demo-form-inline" 
-      style="margin-top:20px; margin-left:10px;">
+      style="margin-top:20px; margin-left:10px;"
+    >
       <!--需要指定字段名prop才会可以重置 -->
       <el-form-item prop= "id">
         <el-input v-model="formInline.id" placeholder="ID"></el-input>
@@ -21,7 +22,7 @@
       <el-form-item>
         <el-button type="primary" @click="searchSubmit">查询</el-button>
         <el-button type="primary" @click="serachReset('formInline')"  >重置</el-button>
-        <el-button type="primary" @click="dialogFormVisible = true">新增</el-button>
+        <el-button type="primary" @click="addNewMember('newMember')">新增</el-button>
       </el-form-item>
     </el-form>
     <!--  main table-->
@@ -63,15 +64,17 @@
 
           <!--bumping dialog-->
           <!-- Form -->
-          <el-dialog title="新增会员" :visible.sync="dialogFormVisible">
-            <el-form :model="formInline" style="label-position:right;">
-              <el-form-item label="会员账号" :label-width="formLabelWidth">
+          <el-dialog title="新增会员" :visible.sync="dialogFormVisible"
+              
+          >
+            <el-form :rules="rules" ref="newMember" :model="formInline" style="label-position:right;">
+              <el-form-item prop="id" label="会员账号" :label-width="formLabelWidth">
                 <el-input v-model="formInline.id" autocomplete="off"></el-input>
               </el-form-item>
-              <el-form-item label="会员姓名" :label-width="formLabelWidth">
+              <el-form-item prop="name" label="会员姓名" :label-width="formLabelWidth">
                 <el-input v-model="formInline.name" autocomplete="off"></el-input>
               </el-form-item>
-              <el-form-item label="支付方式" :label-width="formLabelWidth">
+              <el-form-item prop="payType" label="支付方式" :label-width="formLabelWidth">
                 <el-select v-model="formInline.payType" placeholder="支付方式">
                   <el-option label="现金" value="cash"></el-option>
                   <el-option label="微信" value="wechat"></el-option>
@@ -82,7 +85,7 @@
             </el-form>
             <div slot="footer" class="dialog-footer">
               <el-button @click="dialogFormVisible = false">取 消</el-button>
-              <el-button type="primary" @click="submitNewMember">确 定</el-button>
+              <el-button type="primary" @click="submitNewMember('newMember')">确 定</el-button>
             </div>
           </el-dialog>
 
@@ -114,6 +117,17 @@
             // param for the dialog form used for add new member
             dialogFormVisible: false,
             formLabelWidth: '120px',
+            rules: {
+                id: [
+                    { required: true, message: "please enter your id", trigger: 'blur'  }
+                ],
+                name: [
+                    { required: true, message: "please enter your name", trigger: 'blur'  }
+                ],
+                payType: [
+                    { required: true, message: "please select your paytype", trigger: 'blur'  }
+                ],    
+            },
           };
         },
         methods: {
@@ -140,7 +154,13 @@
           },
           // button method for delete user data
           handleEdit(index, row) {
-            console.log(index, row);
+            const editTargetID = this.list[index].id
+            console.log(editTargetID)
+            memberApi.getMemberById(editTargetID)
+            .then((response=>{
+              console.log(response.data)
+            }))
+            //console.log(index, row);
           },
           handleDelete(index, row) {
             this.list.splice(index, 1);
@@ -151,10 +171,27 @@
             this.pagination = this.val
             this.fetchData()
           },
+          //main page add new member button, once you clicked this, the form will be reset
+          addNewMember(formName){
+            this.dialogFormVisible = true
+            // asysn operation
+            this.$nextTick(()=>{
+              this.$refs[formName].resetFields();
+            })
+            
+          },
           // dialog button for add new member
-          submitNewMember(){
-            console.log("submit!",this.formInline)
-            this.dialogFormVisible = false
+          submitNewMember(formName){
+            console.log("submit!",this.formInline)           
+            this.$refs[formName].validate((valid) => {
+                if (valid) {
+                  // send http request to server
+                  this.dialogFormVisible = false
+                } else {
+                  this.$message("please fill all the blank")
+                  console.log("wrong")
+                }
+            })
           },
         },
         filters: {

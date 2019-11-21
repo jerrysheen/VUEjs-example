@@ -15,5 +15,22 @@ export default {
             method: 'post',
             data: searchMap
         })
+    },
+
+    //edit one's personal infomation
+    getMemberById(id){
+        return request({
+            url:`/member/edit/${id}`,
+            method: 'get'
+        })
+    },
+    updateEdit(editedData){
+        return request({
+            url:`/member/edit/${editedData.id}`,
+            method: 'put',
+            data: editedData
+        })
+
     }
+
 }
