@@ -85,17 +85,18 @@
             </el-form>
             <div slot="footer" class="dialog-footer">
               <el-button @click="dialogFormVisible = false">取 消</el-button>
-              <el-button type="primary" @click="submitNewMember('newMember')">确 定</el-button>
+              <el-button type="primary" @click="action === 'add'?submitNewMember('newMember'):updateMemberData('newMember')">确 定</el-button>
             </div>
           </el-dialog>
 
         </div>
       </template>
 
-      <script>
+<script>
       import memberApi from "@/api/member.js";
 
-      const typeList = ["现金", "微信", "支付宝", "银行卡"];
+      const typeList = ["现金", "微信", "支付宝", "银行卡"]
+      const typeValue = ["cash","wechat","alipay","card"]
 
       export default {
         created() {
@@ -107,7 +108,7 @@
             formInline: {
               id:'',
               name: '',
-              payType: ''
+              payType: '',
             },
             list: [],
             total: 0, // total data number
@@ -117,6 +118,8 @@
             // param for the dialog form used for add new member
             dialogFormVisible: false,
             formLabelWidth: '120px',
+            typeValue : typeValue,
+            action: "", // define which action currently processed for eg.(update/ add new)
             rules: {
                 id: [
                     { required: true, message: "please enter your id", trigger: 'blur'  }
@@ -145,7 +148,7 @@
           searchSubmit() {
             this.searchMap = this.formInline
             this.fetchData()
-            console.log('submit!');
+            console.log('submit!', this.formInline.payType);
             console.log('searchMap',this.formInline)
           },
           serachReset(formName) {
@@ -154,17 +157,42 @@
           },
           // button method for delete user data
           handleEdit(index, row) {
+            this.action = "edit"
+            this.dialogFormVisible = true
             const editTargetID = this.list[index].id
             console.log(editTargetID)
             memberApi.getMemberById(editTargetID)
             .then((response=>{
-              console.log(response.data)
+              //console.log(response.data.data[0])
+              const data = response.data.data[0]
+              const {id , name , payType} = data
+              const payTypeTrans = this.typeValue[payType-1]
+              console.log("type",payTypeTrans)
+              this.formInline = { id, name ,payTypeTrans}
+              this.formInline.payType = payTypeTrans
+
             }))
             //console.log(index, row);
           },
           handleDelete(index, row) {
-            this.list.splice(index, 1);
-            console.log(index, row);
+            this.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {
+                confirmButtonText: '确定',
+                cancelButtonText: '取消',
+                type: 'warning'
+            }).then(() => {
+                this.list.splice(index, 1);
+                // Api send delete method
+                console.log(index, row);
+                this.$message({
+                  type: 'success',
+                  message: '删除成功!'
+                });
+            }).catch(() => {
+                this.$message({
+                  type: 'info',
+                  message: '已取消删除'
+                });  
+            })
           },
           // pagination function
           handleCurrentChange(val) {
@@ -174,6 +202,7 @@
           //main page add new member button, once you clicked this, the form will be reset
           addNewMember(formName){
             this.dialogFormVisible = true
+            this.action = "add"
             // asysn operation
             this.$nextTick(()=>{
               this.$refs[formName].resetFields();
@@ -182,10 +211,26 @@
           },
           // dialog button for add new member
           submitNewMember(formName){
-            console.log("submit!",this.formInline)           
+            console.log("submit!|")           
             this.$refs[formName].validate((valid) => {
                 if (valid) {
                   // send http request to server
+                  this.dialogFormVisible = false
+                } else {
+                  this.$message("please fill all the blank")
+                  console.log("wrong")
+                }
+            })
+          },
+          updateMemberData(formName){
+            console.log("submit!|")           
+            this.$refs[formName].validate((valid) => {
+                if (valid) {
+                  // send http request to server
+                  memberApi.updateEdit(this.formInline)
+                    .then((response)=>{
+                        console.log(response.data.message)
+                    })
                   this.dialogFormVisible = false
                 } else {
                   this.$message("please fill all the blank")
@@ -200,7 +245,7 @@
           }
         }
       };
-    </script>
+</script>
 
-    <style scoped></style></div
+<style scoped></style></div
 ></template>
