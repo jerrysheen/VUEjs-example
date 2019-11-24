@@ -30,7 +30,7 @@
       </el-form-item>
       <el-form-item>
         <el-button type="primary" @click="searchSubmit">查询</el-button>
-        <el-button type="primary" @click="serachReset('formInline')"
+        <el-button type="primary" @click="$refs['formInline'].resetFields()"
           >重置</el-button
         >
         <el-button type="primary" @click="addNewMember('newMember')"
@@ -41,8 +41,9 @@
 
     <!--bumping dialog-->
     <!-- Form -->
-      <el-dialog title="新增会员" :visible.sync="dialogFormVisible">
-         <member :isShowOnFatherComponent="true"></member>
+      <el-dialog title="新增会员" :visible.sync="dialogFormVisible"
+      >
+         <member :isShowOnFatherComponent="true" @itemSelect = "itemSelect"></member>
       </el-dialog>
   </div>
 </template>
@@ -68,7 +69,12 @@ export default {
       },
       searchSubmit() {},
       searchReset(text) {},
-      addNewMember(text) {}
+      addNewMember(text) {},
+      itemSelect(val){
+        console.log(val)
+        this.formInline.name = val.name
+        this.dialogFormVisible = false
+      }
    }
 };
 </script>

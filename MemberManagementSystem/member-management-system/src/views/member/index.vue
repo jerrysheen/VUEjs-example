@@ -5,13 +5,13 @@
       style="margin-top:20px; margin-left:10px;"
     >
       <!--需要指定字段名prop才会可以重置 -->
-      <el-form-item prop= "id">
+      <el-form-item prop= "id" v-if="!isShowOnFatherComponent"> 
         <el-input v-model="formInline.id" placeholder="ID"></el-input>
       </el-form-item>
       <el-form-item prop= "name">
         <el-input v-model="formInline.name" placeholder="姓名"></el-input>
       </el-form-item>
-      <el-form-item prop= "payType">
+      <el-form-item prop= "payType" v-if="!isShowOnFatherComponent">
         <el-select v-model="formInline.payType" placeholder="支付类型">
           <el-option label="现金" value="cash"></el-option>
           <el-option label="微信" value="wechat"></el-option>
@@ -21,12 +21,19 @@
       </el-form-item>
       <el-form-item>
         <el-button type="primary" @click="searchSubmit">查询</el-button>
-        <el-button type="primary" @click="serachReset('formInline')"  >重置</el-button>
-        <el-button type="primary" @click="addNewMember('newMember')">新增</el-button>
+        <el-button type="primary" @click="serachReset('formInline')"  
+          v-if="!isShowOnFatherComponent"
+        >重置</el-button>
+        <el-button type="primary" @click="addNewMember('newMember')"
+          v-if="!isShowOnFatherComponent"
+        >新增</el-button>
       </el-form-item>
-    </el-form>
+    </el-form >
     <!--  main table-->
-          <el-table :data="list" height="350" border style="width: 100%">
+          <el-table :data="list" height="350" border style="width: 100%"
+            highlight-current-row
+            @current-change="handleTableColumnClick"
+          >
             <el-table-column prop="cardNum" label="ID" width="180"> </el-table-column>
             <el-table-column prop="name" label="姓名" width="180"> </el-table-column>
             <el-table-column label="支付类型" width="100">
@@ -36,8 +43,10 @@
                 }}</span>
               </template>
             </el-table-column>
-            <el-table-column prop="address" label="地址"> </el-table-column>
-            <el-table-column label="操作">
+            <el-table-column prop="address" label="地址"
+            v-if="!isShowOnFatherComponent"> </el-table-column>
+            <el-table-column label="操作"
+            v-if="!isShowOnFatherComponent">
               <template slot-scope="scope">
                 <el-button size="mini" @click="handleEdit(scope.$index, scope.row)"
                   >编辑</el-button
@@ -56,7 +65,7 @@
               @current-change="handleCurrentChange"
               :current-page.sync="currentPage"
               :page-size="pageSize"
-              layout="total, prev, pager, next"
+              :layout="!isShowOnFatherComponent?'prev, pager, next':'total, prev, pager, next'"
               :total="total"
             >
             </el-pagination>
@@ -99,6 +108,7 @@
       const typeValue = ["cash","wechat","alipay","card"]
 
       export default {
+        props:{isShowOnFatherComponent:Boolean},
         created() {
           //初始化获取列表数据
           this.fetchData();
@@ -131,6 +141,7 @@
                     { required: true, message: "please select your paytype", trigger: 'blur'  }
                 ],    
             },
+
           };
         },
         methods: {
@@ -238,6 +249,10 @@
                 }
             })
           },
+          handleTableColumnClick(val){
+            console.log(val.id)
+            this.$emit('itemSelect', val)
+          }
         },
         filters: {
           payTypeTrans: function(value) {
