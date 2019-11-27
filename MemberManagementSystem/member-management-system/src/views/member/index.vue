@@ -73,9 +73,7 @@
 
           <!--bumping dialog-->
           <!-- Form -->
-          <el-dialog title="新增会员" :visible.sync="dialogFormVisible"
-              
-          >
+          <el-dialog title="新增会员" :visible.sync="dialogFormVisible" >
             <el-form :rules="rules" ref="newMember" :model="formInline" style="label-position:right;">
               <el-form-item prop="id" label="会员账号" :label-width="formLabelWidth">
                 <el-input v-model="formInline.id" autocomplete="off"></el-input>
@@ -216,6 +214,7 @@
             this.action = "add"
             // asysn operation
             this.$nextTick(()=>{
+              //console.log(typeof(this.$refs))
               this.$refs[formName].resetFields();
             })
             

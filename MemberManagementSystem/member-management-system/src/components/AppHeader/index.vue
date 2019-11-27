@@ -14,11 +14,19 @@
             <el-dropdown-item icon="el-icon-close" command="logout">退出登录</el-dropdown-item>
           </el-dropdown-menu>
         </el-dropdown>
+        <change-password ref="changepassword" ></change-password>
   </div>
 </template>
 <script>
+import changePassword from './ChangePassword'
 import {logout} from '@/api/login'
 export default {
+  components:{changePassword},
+  data(){
+    return{
+      dialogVisible:false,
+    }
+  },
   methods: {
     handleCommand(command) {
         switch(command){
@@ -33,7 +41,7 @@ export default {
               })
               break;
           case 'changepassword':
-              this.$message(`clicked ${command}`)
+              this.$refs.changepassword.openDialog()
               break;
           default:
               break;
