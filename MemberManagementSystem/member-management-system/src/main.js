@@ -14,7 +14,7 @@ import './permission'
 Vue.config.productionTip = process.env.NODE_ENV === 'production';
 console.log(process.env.NODE_ENV)
 
-new Vue({
+var vm = new Vue({
   router,
   render: h => h(App)
 }).$mount("#app");
