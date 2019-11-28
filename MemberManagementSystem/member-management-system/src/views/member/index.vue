@@ -33,6 +33,7 @@
           <el-table :data="list" height="350" border style="width: 100%"
             highlight-current-row
             @current-change="handleTableColumnClick"
+            
           >
             <el-table-column prop="cardNum" label="ID" width="180"> </el-table-column>
             <el-table-column prop="name" label="姓名" width="180"> </el-table-column>
@@ -139,6 +140,7 @@
                     { required: true, message: "please select your paytype", trigger: 'blur'  }
                 ],    
             },
+            //loading: true, // it will show loading icon instead of data( haven't received data.)
 
           };
         },
@@ -147,10 +149,13 @@
             memberApi
               .search(this.currentPage, this.pageSize, this.searchMap)
               .then(response => {
-                const resp = response.data.data;
-                this.list = resp.rows
-                this.total = resp.total
-                console.log(resp);
+                if(response.data.flag){
+                  this.loading = false
+                  const resp = response.data.data;
+                  this.list = resp.rows
+                  this.total = resp.total
+                  console.log(resp);
+                }
               });
           },
           // button method for search
