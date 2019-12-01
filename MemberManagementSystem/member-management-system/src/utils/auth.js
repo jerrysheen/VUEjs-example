@@ -1,5 +1,5 @@
-const TOKEN_KEY = 'msm-accountObj'
-const USER_KEY = 'msm-token'
+const TOKEN_KEY = 'msm-token'
+const USER_KEY = 'msm-accountObj'
 
 export function getToken(){
     return localStorage.getItem(TOKEN_KEY)

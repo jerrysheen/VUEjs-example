@@ -54,20 +54,24 @@ export default {
           this.$refs[formName].validate((valid) => {
             if (valid) {
               // send http request to server
-              login(this.form.account,this.form.password).then(response =>{
-                  const resp = response
-                  console.log(resp)
-                  if(resp.data.flag){
-                    getUserInfo("test").then(response=>{
-                      console.log(response.data.data)
-                      localStorage.setItem('msm-accountObj', JSON.stringify(this.form))
-                      localStorage.setItem('msm-token', resp.data.value.data)
-                      this.$router.push('/')
-                    })
-                  }else{
-                      this.$message.error(resp.data.message);
-                  }
-              })
+              this.$store.dispatch('loginPage',this.form)
+              this.$router.push('/')
+              // login(this.form.account,this.form.password).then(response =>{
+              //     const resp = response
+              //     console.log(resp)
+              //     if(resp.data.flag){
+              //       getUserInfo("test").then(response=>{
+              //         console.log(response.data.data)
+              //         localStorage.setItem('msm-accountObj', JSON.stringify(this.form))
+              //         localStorage.setItem('msm-token', resp.data.value.data)
+              //         //console.log(this.$store)
+              //         this.$store.dispatch('loginPage',this.form)
+              //         this.$router.push('/')
+              //       })
+              //     }else{
+              //         this.$message.error(resp.data.message);
+              //     }
+              //})
             } else {
               console.log('error submit!!');
             }
