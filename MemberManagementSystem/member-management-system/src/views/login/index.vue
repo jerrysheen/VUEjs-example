@@ -54,8 +54,13 @@ export default {
           this.$refs[formName].validate((valid) => {
             if (valid) {
               // send http request to server
-              this.$store.dispatch('loginPage',this.form)
-              this.$router.push('/')
+              const loginPromise = this.$store.dispatch('loginPage',this.form)
+              loginPromise
+                .then(resp=>{
+                  console.log(resp)
+                  this.$router.push('/')
+              })
+            
               // login(this.form.account,this.form.password).then(response =>{
               //     const resp = response
               //     console.log(resp)
