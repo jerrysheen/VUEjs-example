@@ -6,7 +6,7 @@
     </a>
       <el-dropdown @command="handleCommand">
         <span class="el-dropdown-link">
-          下拉菜单<i class="el-icon-arrow-down el-icon--right"></i>
+          {{this.$store.getters.getName}}<i class="el-icon-arrow-down el-icon--right"></i>
         </span>
       
           <el-dropdown-menu slot="dropdown">
@@ -21,6 +21,10 @@
 import changePassword from './ChangePassword'
 import {logout} from '@/api/login'
 export default {
+  created(){
+    //test weather get the data
+    //console.log(this.$store.getters.getName)
+  },
   components:{changePassword},
   data(){
     return{

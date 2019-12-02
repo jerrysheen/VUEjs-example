@@ -60,7 +60,7 @@ export default {
                   console.log(resp)
                   this.$router.push('/')
               })
-            
+              console.log(";;;;;",this.$store.state.login)
               // login(this.form.account,this.form.password).then(response =>{
               //     const resp = response
               //     console.log(resp)
